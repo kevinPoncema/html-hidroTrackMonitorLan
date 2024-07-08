@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sensores</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-4">
+    <h1 class="text-center mb-4">Sensores de <%= userName %></h1>
+    <div id="sensorCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <% sensors.forEach((sensor, index) => { %>
+          <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+            <div class="card">
+              <div class="card-body text-center">
+                <% if(sensor.tipo_sen === '1') { %>
+                  <i class="bi bi-door-closed" style="font-size: 2rem;"></i>
+                <% } else if(sensor.tipo_sen === '2') { %>
+                  <i class="bi bi-moisture" style="font-size: 2rem;"></i>
+                <% } %>
+                <h5 class="card-title mt-3"><%= sensor.nombre_sen %></h5>
+                <p class="card-text">
+                  <strong>Descripción:</strong> <%= sensor.descripcion_sen %><br>
+                  <strong>Estado:</strong> <%= sensor.estado_sen === 1 ? 'ACTIVO' : 'DESACTIVADO' %><br>
+                  <strong>Código:</strong> <%= sensor.codigo_sen %>
+                </p>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+      <a class="carousel-control-prev" href="#sensorCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Anterior</span>
+      </a>
+      <a class="carousel-control-next" href="#sensorCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Siguiente</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="container mt-4">
+    <h2 class="text-center">Gráfica de Consumo Semanal</h2>
+    <div class="chart-container" style="position: relative; height:400px; width:80vw;">
+      <canvas id="graficaBarra"></canvas>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS, Popper.js, Bootstrap Bundle (includes Popper) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const labels = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const values2 = <%= valuesData %>
+      console.log(values2)
+      // Configuración básica de Chart.js para la gráfica de barras
+      const ctx = document.getElementById('graficaBarra').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Consumo Semanal',
+            data: values2,
+            backgroundColor: 'rgba(54, 162, 235, 0.5)', // Color de fondo de las barras
+            borderColor: 'rgba(54, 162, 235, 1)', // Color del borde de las barras
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
