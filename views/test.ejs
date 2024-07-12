@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Consumo</title>
+</head>
+<body>
+    <input type="number" name="can" id="can" placeholder="Ingresa un valor">
+    <button onclick="actuaMsg()">Actualizar</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        function actuaMsg() {
+            const val = document.getElementById("can").value;
+            if (val) {
+                socket.emit("actualizarConsumo", Number(val));
+            } else {
+                alert("Por favor, ingresa un valor válido.");
+            }
+        }
+    </script>
+</body>
+</html>
