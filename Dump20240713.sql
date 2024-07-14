@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `agua` /*!40100 DEFAULT CHARACTER SET armscii8 COLLATE armscii8_bin */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `agua`;
 -- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: agua
@@ -32,7 +30,7 @@ CREATE TABLE `tbl_mediciones` (
   PRIMARY KEY (`id_medicion`),
   KEY `FK_tbl_mediciones_tbl_sensores` (`id_sensor`),
   CONSTRAINT `FK_tbl_mediciones_tbl_sensores` FOREIGN KEY (`id_sensor`) REFERENCES `tbl_sensores` (`id_sen`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +39,7 @@ CREATE TABLE `tbl_mediciones` (
 
 LOCK TABLES `tbl_mediciones` WRITE;
 /*!40000 ALTER TABLE `tbl_mediciones` DISABLE KEYS */;
-INSERT INTO `tbl_mediciones` VALUES (1,800.000000,1,'2024-06-12 18:04:44'),(2,600.000000,1,'2024-06-14 19:04:44'),(3,300.000000,1,'2024-06-14 20:04:44'),(4,400.000000,1,'2024-06-14 21:04:44'),(6,800.000000,1,'2024-06-13 22:04:44');
+INSERT INTO `tbl_mediciones` VALUES (1,500.000000,2,'2024-07-10 00:51:33'),(2,500.000000,2,'2024-07-09 00:51:33'),(3,500.000000,3,'2024-07-11 14:51:33'),(4,500.000000,3,'2024-07-12 14:51:33'),(5,1000.000000,3,'2024-07-12 14:51:33'),(6,300.000000,2,'2024-07-12 20:15:12'),(7,200.000000,2,'2024-07-12 20:30:47');
 /*!40000 ALTER TABLE `tbl_mediciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +61,7 @@ CREATE TABLE `tbl_sensores` (
   PRIMARY KEY (`id_sen`) USING BTREE,
   KEY `FK_tbl_sensores_tbl_usuario` (`id_usuario`),
   CONSTRAINT `FK_tbl_sensores_tbl_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `tbl_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=armscii8 COLLATE=armscii8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +70,7 @@ CREATE TABLE `tbl_sensores` (
 
 LOCK TABLES `tbl_sensores` WRITE;
 /*!40000 ALTER TABLE `tbl_sensores` DISABLE KEYS */;
-INSERT INTO `tbl_sensores` VALUES (1,'1','llave cocina','cocina','12455225',1,1),(2,'2','valvula cocina','valvula cocina','12455225',1,1);
+INSERT INTO `tbl_sensores` VALUES (1,'1','llave cocina','cocina','12455225',1,1),(2,'2','madidor cocina','valvula cocina','12455225',1,1),(3,'2','madidor sala','llave patio','12455225',1,1);
 /*!40000 ALTER TABLE `tbl_sensores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -160,4 +158,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-08 16:38:41
+-- Dump completed on 2024-07-13 14:35:25

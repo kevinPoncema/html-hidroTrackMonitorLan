@@ -5,7 +5,7 @@ const session = require('express-session');
 const path = require('path'); // Módulo path para manejar rutas de archivos
 const http = require('http'); // Importar http
 const socketIo = require('socket.io'); // Importar socket.io
-
+const schedule = require('node-schedule');
 // Crea la app de Express
 const app = express();
 
@@ -53,20 +53,29 @@ const mainController = new mainControl(); // Crear una instancia del controlador
 app.get("/mainPages", mainController.getMain);
 
 // Update list
-app.post('/updateList', (req, res) => { listController.updateList(req, res) });
+//app.post('/updateList', (req, res) => { listController.updateList(req, res) });
 
 app.get("/test",(req,res)=>{
     return res.render("test")
 })
 
 const ValvulaController = require("./controllers/valvulaController");
+const { send } = require('process');
 const valControl = new ValvulaController(io); // Crear una instancia del controlador
+
+app.get("/moreData/:idSensor",valControl.mostratDatos)
+
+app.get("/renderMysen/:idSen",(req,res)=>{
+    if (!req.session.userId && req.session.userId == null) {
+        return res.send("Error: Usuario no autenticado. Inicie sesión.");
+      }
+    res.render("mySen",{senID:req.params.idSen})})
 
 // Configuración de eventos de Socket.IO
 io.on('connection', (socket) => {
     socket.emit("getConsumoActual");
 
-    // Aquí puedes manejar eventos específicos
+    // prueba de conexion
     socket.on('message', (data) => {
         console.log('Mensaje recibido:', data);
         // Emitir el mensaje a todos los clientes
@@ -74,7 +83,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('actualizarEstado', (sensorId,preEstado) => {
-        console.log(sensorId,preEstado)
+       // console.log(sensorId,preEstado)
         valControl.cambiarEstado(sensorId,preEstado)
     });
 
@@ -85,6 +94,28 @@ io.on('connection', (socket) => {
         io.emit("actualizarConsumo2",consumoActual)
       });
 
+      socket.on("insertData",async (sensorId,value)=>{
+        await valControl.insertData(sensorId,value)
+        io.emit("reloadData",sensorId);})
+
+      // Manejar evento 'cierreProgramado'
+    socket.on('cierreProgramado', (data) => {
+        const {date } = data;
+
+        if (!date) {return;}
+
+        const scheduleDate = new Date(date);
+        if (isNaN(scheduleDate.getTime())) {
+            io.emit("sendMsg",msg="fecha invalida",ui="main")
+            return;
+        }
+
+        schedule.scheduleJob(scheduleDate, () => {
+            
+        });
+
+        io.emit("sendMsg",msg="cierre programado con exito",ui="main")
+    });
 
     socket.on('disconnect', () => {
         console.log('Cliente desconectado');

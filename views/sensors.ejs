@@ -12,7 +12,7 @@
 <body>
   <div class="container mt-4">
     <h1 class="text-center mb-4">Sensores de <%= userName %></h1>
-    <h2 id="consumoActual" class="text-center mb-4">consumo de hoy 0%></h2>
+    <h2 id="consumoActual" class="text-center mb-4">Consumo de hoy: 0%</h2>
     <div id="sensorCarousel" class="carousel slide" data-ride="carousel">
       <div class="carousel-inner">
         <% sensors.forEach((sensor, index) => { %>
@@ -24,11 +24,13 @@
                   <h5 class="card-title mt-3"><%= sensor.nombre_sen %></h5>
                   <p class="card-text">
                     <strong>Descripción:</strong> <%= sensor.descripcion_sen %><br>
-                    <strong>Estado:</strong><strong id="estado<%= sensor.id_sen %>"><%= sensor.estado_sen === 1 ? 'ACTIVO' : 'DESACTIVADO' %></strong><br>
+                    <strong>Estado:</strong> <strong id="estado<%= sensor.id_sen %>"><%= sensor.estado_sen === 1 ? 'ACTIVO' : 'DESACTIVADO' %></strong><br>
                     <strong>Código:</strong> <%= sensor.codigo_sen %><br>
                     <strong>ID:</strong> <%= sensor.id_sen %>
                   </p>
-                  <button class="btn btn-danger mt-3" id="btnActu<%= sensor.id_sen %>" value="<%= sensor.id_sen %>" onclick="cerrarSensor('<%= sensor.id_sen %>', <%= sensor.estado_sen %>)">Cerrar</button>
+                  <button class="btn btn-danger mt-3" id="btnActu<%= sensor.id_sen %>" value="<%= sensor.estado_sen %>" onclick="cerrarSensor('<%= sensor.id_sen %>')">
+                    <%= sensor.estado_sen === 1 ? 'Cerrar' : 'Abrir' %>
+                  </button>
                 <% } else if(sensor.tipo_sen === '2') { %>
                   <i class="bi bi-moisture" style="font-size: 2rem;"></i>
                   <h5 class="card-title mt-3"><%= sensor.nombre_sen %></h5>
@@ -38,7 +40,7 @@
                     <strong>Código:</strong> <%= sensor.codigo_sen %><br>
                     <strong>ID:</strong> <%= sensor.id_sen %>
                   </p>
-                  <a href="moreData/<%= sensor.id_sen %>" class="btn btn-info mt-3">Mostrar Más</a>
+                  <a href="/renderMysen/<%= sensor.id_sen %>" class="btn btn-info mt-3">Mostrar Más</a>
                 <% } %>
               </div>
             </div>
@@ -74,32 +76,34 @@
     // Maneja la comunicación en tiempo real
     const socket = io();
 
-    // Función para cerrar el sensor y enviar un mensaje al servidor
-   function cerrarSensor(sensorId,preEstado) {
-      socket.emit('actualizarEstado', sensorId,preEstado);
-      let estadoLbl = document.getElementById("estado"+sensorId)
-      let btn =document.getElementById("btnActu"+sensorId)
-      if(preEstado==1){
-        estadoLbl.innerText =  "DESACTIVADO"
-        btn.innerText ="Abrir"
+    // Función para cerrar o abrir el sensor y enviar un mensaje al servidor
+    function cerrarSensor(sensorId) {
+      const btn = document.getElementById("btnActu"+sensorId);
+      const preEstado = btn.value;
+      socket.emit('actualizarEstado', sensorId, preEstado);      
+      if (preEstado == 1) {
+        btn.innerText = "Abrir";
+        document.getElementById("estado"+sensorId).innerText = "DESACTIVADO";
         btn.value = 2;
-      }else{
-        btn.value =1;
-        estadoLbl.innerText =  "Activado"
-        btn.innerText ="cerrar"
+      } else {
+        btn.innerText = "Cerrar";
+        document.getElementById("estado"+sensorId).innerText = "ACTIVO";
+        btn.value = 1;
       }
     } 
 
     socket.on('actualizarConsumo2', (consumoActual) => {
-      document.getElementById("consumoActual").innerText = "consumo de hoy "+consumoActual
-      console.log(consumoActual)
+      document.getElementById("consumoActual").innerText = "Consumo de hoy: " + consumoActual + "%";
+    });
+
+    socket.on('reloadData', (sensorId) => {
+      location.reload(true);
     });
 
     // Carga y configura la gráfica
     document.addEventListener('DOMContentLoaded', function() {
       const labels = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       const values2 = <%= valuesData %>;
-      console.log(values2);
       
       const ctx = document.getElementById('graficaBarra').getContext('2d');
       new Chart(ctx, {
@@ -128,9 +132,11 @@
       });
     });
 
-    // Mensaje de test
+    // Mensaje de prueba
     socket.emit('message', 'Hola desde el cliente');
   </script>
 </body>
 </html>
+
+
 

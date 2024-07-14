@@ -23,7 +23,7 @@ class UserModel {
     }catch (error){
       throw error
     }
-  }
+  }  
 }
 
 module.exports = UserModel;

@@ -9,6 +9,17 @@
     <input type="number" name="can" id="can" placeholder="Ingresa un valor">
     <button onclick="actuaMsg()">Actualizar</button>
 
+    <br>
+    <h2>test 2 insertData</h2>
+    <input type="text" name="sensor" id="sensor" placeholder="sensor">
+    <br>
+    <input type="text" name="" id="valor" placeholder="valor">
+    <br>
+    <button onclick="test2()">Test2</button>
+
+    <br>
+    <h2>test3</h2>
+    <h3 id="magia">aqui van a pasar cosas</h3>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
@@ -21,6 +32,22 @@
                 alert("Por favor, ingresa un valor válido.");
             }
         }
+
+        function test2() {
+            const sen = document.getElementById("sensor").value;
+            const  val = document.getElementById("valor").value;
+            socket.emit("insertData",Number(sen), Number(val));
+        }
+
+        socket.on("arduinoCierra",()=>{
+            document.getElementById("magia").innerText = "se cerro magicamente"
+        })
+
+        socket.on("arduinoAbre",()=>{
+            document.getElementById("magia").innerText = "se abrio magicamente"
+        })
+
+        
     </script>
 </body>
 </html>
