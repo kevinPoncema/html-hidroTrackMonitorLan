@@ -32,7 +32,7 @@ El Sistema de Medición y Gestión del Agua es una aplicación desarrollada para
 - **Algoritmos de Procesamiento de Datos:** Desarrollé algoritmos para procesar los datos de consumo de agua.
 - **Comunicación en Tiempo Real:** Implementé la comunicación en tiempo real con el hardware utilizando Socket.io.
 - **Despliegue a Producción:** Realicé el despliegue del sistema en un VPS, configurando Nginx para permitir la conexión web socket y redirigir el tráfico.
-- **Asistencia en Frontend:** Asistí en la implementación de gráficas responsivas con Chart.js y participé en la lógica compleja de la pantalla de préstamo de libros.
+- **Asistencia en Frontend:** Asistí en la implementación de gráficas responsivas con Chart.js y participé.
 
 ## Funcionalidades del Sistema
 
@@ -44,11 +44,6 @@ El Sistema de Medición y Gestión del Agua es una aplicación desarrollada para
 ## Nota
 
 El Sistema de Medición y Gestión del Agua sigue en desarrollo. A continuación, se detallan algunas de las funcionalidades y mejoras que se están trabajando actualmente:
-
-- **Integración Completa del Frontend y Backend:** Aunque el backend está mayormente implementado, la integración completa con el frontend sigue en progreso. Algunos diseños del frontend aún están en proceso de finalización.
-- **Optimización de la Interfaz de Usuario:** Se están realizando mejoras en la interfaz de usuario para hacerla más intuitiva y fácil de usar.
-- **Funciones Adicionales:** Implementación de nuevas funcionalidades como la búsqueda avanzada de datos, notificaciones para alertas de consumo excesivo, y un sistema de recomendación para el ahorro de agua.
-- **Seguridad:** Mejoras en la seguridad del sistema, incluyendo autenticación y autorización más robustas.
-- **Pruebas y Debugging:** Continuamos realizando pruebas y depuración para asegurar que el sistema funcione sin problemas y esté libre de errores.
+**Mejoras el haradware** se estan realizando diversas mejoras en el hardawere y resolviendo problemas con la conexion a internet
 
 Agradecemos tu comprensión y paciencia mientras trabajamos en estas mejoras para ofrecer una experiencia óptima a los usuarios.
