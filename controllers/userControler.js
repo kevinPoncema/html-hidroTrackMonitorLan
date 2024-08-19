@@ -24,7 +24,8 @@ class userControl {
                 req.session.userId = data.rows[0].id_usuario;
                 return res.redirect("/mainPages");
             } else {
-                return res.status(404).render("login", { message: "Error: Datos incorrectos", colorP: "error-message" });
+                const template = req.device.type === 'phone' ? 'login' : 'LoginPrincipal';
+                return res.status(404).render(template, { message: "Error: Datos incorrectos", colorP: "error-message" });
             }
         } catch (error) {
             console.log(error); // Imprime el error para diagnosticar el problema

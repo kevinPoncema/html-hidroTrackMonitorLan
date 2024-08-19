@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const device = require('express-device');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path'); // Módulo path para manejar rutas de archivos
@@ -49,19 +50,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta para servir el archivo logIn.html
-app.get("/", (req, res) => {
-    res.render("login", { message: "", colorP: "success-message" });
+app.get("/",device.capture(), (req, res) => {
+    if (req.device.type === 'phone'){
+        res.render("login", { message: "goku", colorP: "success-message" });
+    }else{
+        return   res.render("LoginPrincipal", { message: "", colorP: "success-message" })
+    }
 });
 
-app.get("/loginii",(req,res)=>{
-    res.render("")
-})
+
 
 // Ruta para el inicio de sesión
 const userControl = require("./controllers/userControler");
 const userController = new userControl(); // Crear una instancia del controlador
 
-app.post("/logIn", (req, res) => { userController.logIn(req, res) }); // Endpoint para la función de inicio de sesión
+app.post("/logIn",device.capture(), (req, res) => { userController.logIn(req, res) }); // Endpoint para la función de inicio de sesión
 
 const mainControl = require("./controllers/mainControlers");
 const mainController = new mainControl(); // Crear una instancia del controlador
@@ -78,6 +81,7 @@ app.get("/test",(req,res)=>{
 
 const ValvulaController = require("./controllers/valvulaController");
 const { send } = require('process');
+const { error } = require('console');
 const valControl = new ValvulaController(io); // Crear una instancia del controlador
 
 app.get("/moreData/:idSensor",valControl.mostratDatos)

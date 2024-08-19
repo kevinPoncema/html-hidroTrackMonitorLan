@@ -1,0 +1,344 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg %3E%3Cpolygon fill='%234c8e43' points='100 57.1 64 93.1 71.5 100.6 100 72.1'/%3E%3Cpolygon fill='%236aac5f' points='100 57.1 100 72.1 128.6 100.6 136.1 93.1'/%3E%3Cpolygon fill='%234c8e43' points='100 163.2 100 178.2 170.7 107.5 170.8 92.4'/%3E%3Cpolygon fill='%236aac5f' points='100 163.2 29.2 92.5 29.2 107.5 100 178.2'/%3E%3Cpath fill='%2389CC7C' d='M100 21.8L29.2 92.5l70.7 70.7l70.7-70.7L100 21.8z M100 127.9L64.6 92.5L100 57.1l35.4 35.4L100 127.9z'/%3E%3Cpolygon fill='%23768c3a' points='0 157.1 0 172.1 28.6 200.6 36.1 193.1'/%3E%3Cpolygon fill='%2396ac58' points='70.7 200 70.8 192.4 63.2 200'/%3E%3Cpolygon fill='%23B6CC76' points='27.8 200 63.2 200 70.7 192.5 0 121.8 0 157.2 35.3 192.5'/%3E%3Cpolygon fill='%2396ac58' points='200 157.1 164 193.1 171.5 200.6 200 172.1'/%3E%3Cpolygon fill='%23768c3a' points='136.7 200 129.2 192.5 129.2 200'/%3E%3Cpolygon fill='%23B6CC76' points='172.1 200 164.6 192.5 200 157.1 200 157.2 200 121.8 200 121.8 129.2 192.5 136.7 200'/%3E%3Cpolygon fill='%23768c3a' points='129.2 0 129.2 7.5 200 78.2 200 63.2 136.7 0'/%3E%3Cpolygon fill='%23B6CC76' points='200 27.8 200 27.9 172.1 0 136.7 0 200 63.2 200 63.2'/%3E%3Cpolygon fill='%2396ac58' points='63.2 0 0 63.2 0 78.2 70.7 7.5 70.7 0'/%3E%3Cpolygon fill='%23B6CC76' points='0 63.2 63.2 0 27.8 0 0 27.8'/%3E%3C/g%3E%3C/svg%3E");
+
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.backgroundOffice{
+    background-color: #224A73;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Hace que el fondo se mantenga fijo mientras se desplaza la página */
+    background-image: url('https://i.pinimg.com/564x/37/87/c2/3787c255f3dbf7f8d16fe7d9ced272af.jpg');
+}
+
+.logo {
+    position: absolute;
+    top: 10px; /* Posición hacia arriba */
+    left: 10px; /* Posición hacia la izquierda */
+    width: 140px; /* Tamaño más grande del logo */
+    height: 140px; /* Mantén la altura igual al ancho para que sea redondo */
+    border-radius: 50%; /* Hace que el contenedor del logo sea redondo */
+    overflow: hidden; /* Asegura que la imagen no sobresalga del contenedor redondo */
+    opacity: 0.8; /* Menos transparencia */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo más oscuro para el logo */
+}
+
+.logo img {
+    width: 100%; /* Asegura que la imagen ocupe todo el contenedor */
+    height: 100%; /* Ajusta la imagen para que llene el contenedor */
+    object-fit: cover; /* Asegura que la imagen se recorte correctamente dentro del contenedor */
+    border-radius: 50%; /* Hace que la imagen sea redonda */
+}
+
+/*Reponsivo*/
+@media (max-width: 576px) {
+    .container {
+        width: 100%;
+        height: auto;
+    }
+
+    .form-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .logo {
+        width: 100px;
+        height: 100px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+:root {
+    --linear-grad: linear-gradient(to right, #1e3db8, #1e3db8);
+    --grad-clr1: hsl(219, 60%, 24%);
+    --grad-clr2: #1e3db8;
+}
+
+body {
+    height: 100vh;
+    background: #f6f5f7;
+    display: grid;
+    place-content: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    position: relative;
+    width: 850px;
+    height: 550px;
+    background-color: #FFF;
+    box-shadow: 25px 30px 55px #5557;
+    border-radius: 13px;
+    overflow: hidden;
+}
+
+.form-container {
+    position: absolute;
+    width: 60%;
+    height: 100%;
+    padding: 20px 40px;
+    transition: all 0.6s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sign-up-container {
+    opacity: 0;
+    z-index: 1;
+}
+
+.sign-in-container {
+    z-index: 2;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 50px;
+    text-align: center;
+}
+
+h1 {
+    color: var(--grad-clr1);
+    margin-bottom: 15px; /* Reducido el margen inferior */
+}
+
+p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px; /* Reducido el interlineado */
+    letter-spacing: 0.5px;
+    margin: 15px 0px 20px; /* Reducido el margen superior e inferior */
+}
+
+.social-container {
+    margin: 15px 0px; /* Reducido el margen */
+}
+
+.social-container a {
+    border: 1px solid #DDD;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 5px;
+    height: 40px;
+    width: 40px;
+}
+
+span {
+    font-size: 12px;
+    margin-bottom: 8px; /* Reducido el margen inferior */
+}
+
+.infield {
+    position: relative;
+    margin: 16px 0px; /* Reducido el margen para menos espacio entre los inputs */
+    width: 100%;
+}
+
+input {
+    width: 100%;
+    padding: 12px 8px;
+    background-color: #f3f3f3;
+    border: none;
+    outline: none;
+}
+
+label {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%);
+    width: 100%;
+    height: 2px;
+    background: var(--linear-grad);
+    transition: 0.3s;
+}
+
+input:focus ~ label {
+    width: 100%;
+}
+
+a {
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    margin: 15px 0px; /* Reducido el margen */
+}
+
+a.forgot {
+    padding-bottom: 3px;
+    border-bottom: 2px solid #EEE;
+}
+
+button {
+    border-radius: 20px;
+    border: 1px solid var(--grad-clr1);
+    background: var(--grad-clr2);
+    color: #FFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: 80ms ease-in;
+    margin-top: 20px; /* Ajuste del margen superior */
+}
+
+button:hover {
+    background: #FFF;
+    color: var(--grad-clr1);
+}
+
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 60%;
+    width: 40%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 9;
+}
+
+#overlayBtn {
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    top: 340px; /* Ajuste del valor para mover el botón más abajo */
+    transform: translateX(-50%);
+    width: 143.67px;
+    height: 40px;
+    border: 1px solid #FFF;
+    background: transparent;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+.overlay {
+    position: relative;
+    background: var(--linear-grad);
+    color: #FFF;
+    left: -150%;
+    height: 100%;
+    width: 250%;
+    transition: transform 0.6s ease-in-out;
+}
+
+.overlay-panel {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0px 40px;
+    text-align: center;
+    height: 100%;
+    width: 340px;
+    transition: 0.6s ease-in-out;
+}
+
+.overlay-left {
+    right: 60%;
+    transform: translateX(-12%);
+}
+
+.overlay-right {
+    right: 0;
+    transform: translateX(0%);
+}
+
+.overlay-panel h1 {
+    color: #FFF;
+    margin-bottom: 20px; /* Reducido el margen inferior */
+}
+
+.overlay-panel button {
+    border: none;
+    background-color: transparent;
+    position: relative;
+    top: -8px; /* Ajuste de la posición hacia arriba */
+    font-size: 14px;
+    color: #FFF;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Centra el botón horizontalmente */
+    align-items: center; /* Centra el botón verticalmente dentro del contenedor */
+    margin-top: 48px; /* Reducido el margen superior */
+    margin-bottom: 15px; /* Reducido el margen inferior */
+    padding: 10px; /* Espacio alrededor del botón dentro del contenedor */
+}
+
+.right-panel-active .overlay-container {
+    transform: translateX(-150%);
+}
+
+.right-panel-active .overlay {
+    transform: translateX(50%);
+}
+
+.right-panel-active .overlay-left {
+    transform: translateX(25%);
+}
+
+.right-panel-active .overlay-right {
+    transform: translateX(35%);
+}
+
+.right-panel-active .sign-in-container {
+    transform: translateX(20%);
+    opacity: 0;
+}
+
+.right-panel-active .sign-up-container {
+    transform: translateX(66.7%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+    0%, 50% {
+        opacity: 0;
+        z-index: 1;
+    }
+    50.1%, 100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+.btnScaled {
+    animation: scaleBtn 0.6s;
+}
+
+@keyframes scaleBtn {
+    0% {
+        width: 143.67px;
+    }
+    50% {
+        width: 250px;
+    }
+    100% {
+        width: 143.67px;
+    }
+}
