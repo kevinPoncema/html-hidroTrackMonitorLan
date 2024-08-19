@@ -11,10 +11,10 @@ class ValvulaController {
             await valvulaDb.cambiarEstado(val);
             if (preEstado == 2) {
               //console.log(preEstado,"cerrando")
-                this.io.emit('arduinoCierra', val);
+                this.io.emit('arduinoAbre', val);
             } else {
                 //console.log(preEstado,"abreindo")
-                this.io.emit('arduinoAbre', val);
+                this.io.emit('arduinoCierra', val);
             }
         } catch (error) {
             console.error('Error al cambiar el estado de la válvula:', error);
@@ -25,11 +25,6 @@ class ValvulaController {
         const valvulaDb = new valvulaModel();
         try {
             await valvulaDb.insertData(sensorId,value);
-            if (preEstado === 1) {
-                this.io.emit('arduinoCierra', val);
-            } else {
-                this.io.emit('arduinoAbre', val);
-            }
         } catch (error) {
             console.error('Error al cambiar el insertar datos de los sensores:', error);
         }

@@ -8,6 +8,9 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+
+  </style>
 </head>
 <body>
   <div class="container mt-4">
@@ -28,9 +31,23 @@
                     <strong>Código:</strong> <%= sensor.codigo_sen %><br>
                     <strong>ID:</strong> <%= sensor.id_sen %>
                   </p>
-                  <button class="btn btn-danger mt-3" id="btnActu<%= sensor.id_sen %>" value="<%= sensor.estado_sen %>" onclick="cerrarSensor('<%= sensor.id_sen %>')">
-                    <%= sensor.estado_sen === 1 ? 'Cerrar' : 'Abrir' %>
-                  </button>
+                  <div class="form-row mb-3">
+                    <div class="col">
+                      <input type="datetime-local" id="tiempo<%= sensor.id_sen %>" class="form-control" required>
+                    </div>
+                    <div class="col">
+                      <select id="opc<%= sensor.id_sen %>" class="form-control" required>
+                        <option value="1">Abrir</option>
+                        <option value="2">Cerrar</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="btn-group" role="group">
+                    <button class="btn btn-danger" id="btnActu<%= sensor.id_sen %>" value="<%= sensor.estado_sen %>" onclick="cerrarSensor('<%= sensor.id_sen %>')">
+                      <%= sensor.estado_sen === 1 ? 'Cerrar' : 'Abrir' %>
+                    </button>
+                    <button class="btn btn-primary" onclick="programar('<%= sensor.id_sen %>')">Programar</button>
+                  </div>
                 <% } else if(sensor.tipo_sen === '2') { %>
                   <i class="bi bi-moisture" style="font-size: 2rem;"></i>
                   <h5 class="card-title mt-3"><%= sensor.nombre_sen %></h5>
@@ -92,6 +109,38 @@
       }
     } 
 
+// Función para programar una acción
+function programar(sensorId) {
+  console.log("Sí");
+  const tiempo = document.getElementById("tiempo"+sensorId).value;
+  const accion = document.getElementById("opc"+sensorId).value;
+  console.log(accion)
+  // Verificar si se proporcionó la fecha y hora
+  if (!tiempo) {
+    alert('Por favor, selecciona una fecha y hora.');
+    return;
+  }
+  // Obtener la fecha y hora actual
+  const ahora = new Date();
+  // Convertir tiempo a objeto Date
+  const fechaHoraSeleccionada = new Date(tiempo);
+  // Verificar si la fecha y hora seleccionada es mayor que la fecha y hora actual
+  if (fechaHoraSeleccionada <= ahora) {
+    alert('La fecha y hora seleccionada debe ser mayor que la fecha y hora actual.');
+    return;
+  }
+  // Emitir evento de socket para programar la acción
+  socket.emit('programarAccion', { date: fechaHoraSeleccionada, sensorId, opc:accion });
+}
+
+
+    socket.on("sendMsg", (data) => {
+  const { msg, ui } = data;
+  if (ui === "main") {
+    alert(msg);
+  }
+});
+
     socket.on('actualizarConsumo2', (consumoActual) => {
       document.getElementById("consumoActual").innerText = "Consumo de hoy: " + consumoActual + "%";
     });
@@ -137,6 +186,3 @@
   </script>
 </body>
 </html>
-
-
-

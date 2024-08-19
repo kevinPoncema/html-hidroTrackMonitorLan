@@ -6,12 +6,25 @@ const path = require('path'); // Módulo path para manejar rutas de archivos
 const http = require('http'); // Importar http
 const socketIo = require('socket.io'); // Importar socket.io
 const schedule = require('node-schedule');
+const cors = require('cors'); // Importar cors
 // Crea la app de Express
 const app = express();
-
+app.use(cors({
+    origin: '*', // Permite conexiones desde cualquier origen. Puedes restringir esto a dominios específicos si lo prefieres.
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type']
+  }));
+  
+  
 // Crear el servidor HTTP
 const server = http.createServer(app);
-const io = socketIo(server); // Inicializar Socket.IO con el servidor
+// Inicializar Socket.IO con el servidor
+const io = socketIo(server, {
+    cors: {
+      origin: '*', // Permite conexiones desde cualquier origen. Puedes restringir esto a dominios específicos si lo prefieres.
+      methods: ['GET', 'POST']
+    }
+  });
 
 // Configurar body-parser para parsear datos de formularios HTML
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -39,6 +52,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get("/", (req, res) => {
     res.render("login", { message: "", colorP: "success-message" });
 });
+
+app.get("/loginii",(req,res)=>{
+    res.render("")
+})
 
 // Ruta para el inicio de sesión
 const userControl = require("./controllers/userControler");
@@ -99,23 +116,37 @@ io.on('connection', (socket) => {
         io.emit("reloadData",sensorId);})
 
       // Manejar evento 'cierreProgramado'
-    socket.on('cierreProgramado', (data) => {
-        const {date } = data;
-
-        if (!date) {return;}
-
-        const scheduleDate = new Date(date);
-        if (isNaN(scheduleDate.getTime())) {
-            io.emit("sendMsg",msg="fecha invalida",ui="main")
+      socket.on('programarAccion', (data) => {
+        console.log("Recibido evento programarAccion");
+        // Extraer los datos recibidos
+        const { date, sensorId, opc } = data;    
+        // Validar que la fecha exista
+        if (!date) {
+            io.emit("sendMsg", { msg: "Fecha no proporcionada", ui: "main" });
             return;
         }
-
-        schedule.scheduleJob(scheduleDate, () => {
-            
+        // Convertir la fecha a un objeto Date
+        const scheduleDate = new Date(date);
+        // Validar que la fecha sea válida
+        if (isNaN(scheduleDate.getTime())) {
+            io.emit("sendMsg", { msg: "Fecha inválida", ui: "main" });
+            return;
+        }
+        // Crear el evento programado
+        schedule.scheduleJob(scheduleDate, async () => {
+            try {
+                await valControl.cambiarEstado(sensorId, opc);
+                io.emit("reloadData", sensorId);
+                console.log("Acción ejecutada con éxito para el sensor:", sensorId);
+            } catch (error) {
+                console.error("Error al cambiar el estado del sensor:", error);
+                io.emit("sendMsg", { msg: "Error al ejecutar la acción", ui: "main" });
+            }
         });
-
-        io.emit("sendMsg",msg="cierre programado con exito",ui="main")
+        console.log("Acción programada para el sensor:", sensorId, "en la fecha:", scheduleDate +"valor "+opc);
+        io.emit("sendMsg", { msg: "Acción programada con éxito", ui: "main" });
     });
+    
 
     socket.on('disconnect', () => {
         console.log('Cliente desconectado');
