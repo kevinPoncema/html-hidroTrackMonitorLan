@@ -21,9 +21,10 @@ class ValvulaController {
         }
     }
 
-    async insertData(sensorId, value) {
+    static async insertData(sensorId, value) {
         const valvulaDb = new valvulaModel();
         try {
+          console.log(sensorId,value)
             await valvulaDb.insertData(sensorId,value);
         } catch (error) {
             console.error('Error al cambiar el insertar datos de los sensores:', error);

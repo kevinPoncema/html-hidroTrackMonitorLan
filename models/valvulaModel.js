@@ -101,6 +101,21 @@ class valculaModel {
     }
   }
 
+  async getSenStatus(){
+    try {
+      const conexion = new ConexionClass();
+      await conexion.conectar();
+      
+      const query = `SELECT s.id_sen,s.estado_sen FROM tbl_sensores s WHERE s.tipo_sen = 1;`;
+      const data = await conexion.queryParams(query, []);
+      await conexion.desconectar(); // Cerrar la conexión después de usarla
+      return data;
+    } catch (error) {
+      console.error('Error al obtener los status', error);
+      throw error;
+    }
+  }
+
 }
 
 

@@ -110,7 +110,6 @@ io.on('connection', (socket) => {
 
 
     socket.on('actualizarConsumo', (consumoActual) => {
-        //document.getElementById("consumoActual").innerText = consumoActual
         console.log(consumoActual)
         io.emit("actualizarConsumo2",consumoActual)
       });
@@ -155,6 +154,36 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('Cliente desconectado');
     });
+});
+
+//api para que el arduino si soque
+const valvulaModel = require("./models/valvulaModel.js");
+const realModel = new valvulaModel();
+app.get("/status/:consumoActual",async (req,res)=>{
+    const consumoActual = req.params.consumoActual;
+    io.emit("actualizarConsumo2",consumoActual);
+    const data =await realModel.getSenStatus()
+    return res.send(data.rows)
+
+})
+
+
+app.get("/insert/:idsen/:value", async (req, res) => {
+    try {
+    const idSen = parseInt(req.params.idsen, 10);
+    const value = parseFloat(req.params.value);
+
+    if (isNaN(idSen) || isNaN(value)) {
+        return res.status(400).send("Los parámetros deben ser números.");
+    }
+    console.log(idSen,value)
+    await ValvulaController.insertData(idSen, value);
+    io.emit("reloadData", idSen);
+    return res.send("ok");
+    } catch (error) {
+        return res .send("Error fatal"+error)
+    }
+    
 });
 
 // Iniciar el servidor
