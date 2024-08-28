@@ -7,7 +7,7 @@ class mainControl {
         try {
             const sensors = await mainModel.getSensorsByUserName(userName);
             const grafica = await mainModel.graficaSemanalCompleta(userName);
-    
+            console.log("Datos dese controller",grafica)
             const labels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             let values = [];
     

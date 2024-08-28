@@ -214,6 +214,8 @@
           }
         }
       });
+
+      if (!localStorage.getItem('tourCompleted')) {
       var intro = introJs();
       intro.setOptions({
         steps: [
@@ -275,6 +277,15 @@
         doneLabel: 'Finalizar'
       });
       intro.start();
+      intro.oncomplete(function() {
+            localStorage.setItem('tour1Completed', true);
+        });
+
+        intro.onexit(function() {
+            localStorage.setItem('tour1Completed', true);
+        });
+
+      }
       
 
     });

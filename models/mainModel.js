@@ -38,7 +38,7 @@ class mainModel {
     }
   }
   
-  async graficaSemanalCompleta(userName){
+  async graficaPromedioMensual(userName){
     try {
       const conexion = new ConexionClass();
       await conexion.conectar();
