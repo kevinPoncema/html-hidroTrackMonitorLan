@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css">
 
   <style>
-    .carousel-control-prev-icon,
+  .carousel-control-prev-icon,
     .carousel-control-next-icon {
       background-color: rgba(0, 0, 0, 0.5); /* Opcional, para dar un fondo oscuro */
       border-radius: 50%; /* Opcional, para hacer los íconos redondeados */
@@ -20,18 +20,24 @@
     .introjs-overlay {
       background-color: rgba(0, 0, 0, 0.5) !important;
     }
+
     .introjs-tooltip {
       background-color: #333 !important;
       color: #fff !important;
       border-radius: 5px !important;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+      width: 600px !important; /* Ancho fijo */
+      max-width: 80% !important; /* Ancho máximo en porcentaje */
     }
+
     .introjs-tooltiptext {
       font-size: 16px;
     }
+
     .introjs-helperLayer {
       background-color: rgba(0, 0, 0, 0.3) !important;
     }
+
     .customTooltip img, .customTooltip video {
       max-width: 100%;
       margin-top: 10px;
@@ -43,6 +49,7 @@
     <h1 class="text-center mb-4">Sensores de <%= userName %></h1>
     <h2 id="consumoActual" class="text-center mb-4">Consumo de hoy: 0%</h2>
     <div id="sensorCarousel" class="carousel slide" data-ride="carousel">
+      <div id="pipi2">
       <div class="carousel-inner" id="mycarusel">
         <% sensors.forEach((sensor, index) => { %>
           <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
@@ -99,6 +106,8 @@
         <span class="sr-only">Siguiente</span>
       </a>
     </div>
+  </div>
+
   </div>
 
   <div class="container mt-4">
@@ -209,14 +218,53 @@
       intro.setOptions({
         steps: [
           {
-            element: '#mycarusel',
+            element: '#bottom-center',
             intro: `
-              <h2>¡Bienvenido a la pantalla de inicio!</h2>
-              <p>Aquí puedes ver un resumen general de la aplicación.</p>
-              <img src="Screenshot_20240625_141703_Drive.jpg" alt="Ejemplo de imagen">
+              <h3>Lista De Sensores y LLaves</h3>
+                  <img src="/img/lista.gif" alt="Ejemplo de imagen">
+              <p>Aquí puedes ver una lista de sensores (medidores) y válvulas (para cerrar o abrir llaves). Puedes usar las flechas para desplazarte entre los diferentes sensores.</p>
+          
             `,
             tooltipPosition: 'bottom'
-          }
+          },
+          {
+            element: '#bottom-center',
+            intro: `
+              <h3>Abrir y Cerrar Llaves</h3>
+                  <img src="/img/lista.gif" alt="Ejemplo de imagen">
+              <p>Desplázate con las flechitas hasta la válvula que quieras cerrar o abrir y oprime el botón rojo que dice "Cerrar" o "Abrir", según el estado de la válvula. Al hacer clic en el botón, en cuestión de segundos, la válvula se cerrará o abrirá..</p>
+          
+            `,
+            tooltipPosition: 'bottom'
+          },
+          {
+          element: '#bottom-center',
+          intro: `
+            <h3>Programar Cierre</h3>
+            <img src="/img/lista.gif" alt="Ejemplo de imagen">
+            <p>Desplázate con las flechitas hasta la válvula que quieras cerrar o abrir y oprime el botón rojo que dice "Cerrar" o "Abrir", según el estado de la válvula. Al hacer clic en el botón, en cuestión de segundos, la válvula se cerrará o abrirá.</p>
+          `,
+          tooltipPosition: 'bottom'
+        },
+        {
+          element: '#bottom-center',
+          intro: `
+            <h3>Ver Datos Detallados</h3>
+            <img src="/img/lista.gif" alt="Ejemplo de imagen">
+            <p>Desplázate con las flechitas hasta el medidor que deseas observar y haz clic en el botón "Mostrar Más". Esto te llevará a una pantalla con gráficos detallados que muestran información más específica sobre el medidor seleccionado.</p>
+          `,
+          tooltipPosition: 'bottom'
+        },
+        {
+        element: '#graficaBarra',
+        intro: `
+          <h3>Gráfica de Consumo General</h3>
+          <p>En esta sección puedes observar un gráfico de consumo general de toda la semana. La gráfica muestra cómo ha variado el consumo a lo largo de los días, proporcionándote una visión general de la tendencia semanal.</p>
+        `,
+        tooltipPosition: 'bottom'
+        }
+
+
         ],
         showStepNumbers: true,
         exitOnOverlayClick: false,
@@ -227,7 +275,7 @@
         doneLabel: 'Finalizar'
       });
       intro.start();
-
+      
 
     });
 

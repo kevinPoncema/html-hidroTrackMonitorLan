@@ -38,6 +38,22 @@ class mainModel {
     }
   }
   
+  async graficaSemanalCompleta(userName){
+    try {
+      const conexion = new ConexionClass();
+      await conexion.conectar();
+      
+      const query = `CALL promedio_mensual_general(?)`;
+      const params = [userName];
+      const data = await conexion.queryParams(query, params);
+      await conexion.desconectar(); // Cerrar la conexión después de usarla
+      return data;
+    } catch (error) {
+      console.error('Error al obtener la grafica:', error);
+      throw error;
+    }
+  }
+  
 }
 
 module.exports = mainModel;

@@ -85,7 +85,25 @@ class valculaModel {
     }
   }
 
+  async graficaMensualPorSen(idSen){
+    try {
+      const conexion = new ConexionClass();
+      await conexion.conectar();
+      
+      const query = `CALL proemdio_mensual_sen(?)`;
+      const params = [idSen];
+      const data = await conexion.queryParams(query, params);
+      await conexion.desconectar(); // Cerrar la conexión después de usarla
+      return data;
+    } catch (error) {
+      console.error('Error al obtener la grafica:', error);
+      throw error;
+    }
+  }
+
 }
+
+
 
   
 
