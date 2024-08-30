@@ -15,8 +15,6 @@ app.use(cors({
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type']
   }));
-  
-  
 // Crear el servidor HTTP
 const server = http.createServer(app);
 // Inicializar Socket.IO con el servidor

@@ -94,7 +94,7 @@ class valculaModel {
       const params = [idSen];
       const data = await conexion.queryParams(query, params);
       await conexion.desconectar(); // Cerrar la conexión después de usarla
-      return data;
+      return data.rows[0];
     } catch (error) {
       console.error('Error al obtener la grafica:', error);
       throw error;
@@ -112,6 +112,22 @@ class valculaModel {
       return data;
     } catch (error) {
       console.error('Error al obtener los status', error);
+      throw error;
+    }
+  }
+
+  async graficaMensualNormal(idSen){
+    try {
+      const conexion = new ConexionClass();
+      await conexion.conectar();
+      
+      const query = `CALL getConsumoMensualSen(?)`;
+      const params = [idSen];
+      const data = await conexion.queryParams(query, params);
+      await conexion.desconectar(); // Cerrar la conexión después de usarla
+      return data.rows[0];
+    } catch (error) {
+      console.error('Error al obtener la grafica:', error);
       throw error;
     }
   }

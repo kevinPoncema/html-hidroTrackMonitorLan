@@ -40,14 +40,15 @@ class mainModel {
   
   async graficaPromedioMensual(userName){
     try {
+      console.log("desde modelo")
       const conexion = new ConexionClass();
       await conexion.conectar();
-      
       const query = `CALL promedio_mensual_general(?)`;
       const params = [userName];
       const data = await conexion.queryParams(query, params);
-      await conexion.desconectar(); // Cerrar la conexión después de usarla
-      return data;
+      await conexion.desconectar();// Cerrar la conexión después de usarla
+      //console.log(data.rows[0])
+      return data.rows[0];
     } catch (error) {
       console.error('Error al obtener la grafica:', error);
       throw error;

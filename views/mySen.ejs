@@ -64,6 +64,16 @@
                 <h3>Consumo por Hora</h3>
                 <canvas id="lineChart"></canvas>
             </div>
+
+            <div class="col-md-6 mb-4">
+                <h3>grafica de Consumo Mensual</h3>
+                <canvas id="ConsumoMensual"></canvas>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <h3>Predicion de Consumo Mensual</h3>
+                <canvas id="predictGrafica"></canvas>
+            </div>
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
@@ -126,6 +136,77 @@
                         scales: {
                             y: {
                                 beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                //grafica 3
+                const ctx2 = document.getElementById('predictGrafica').getContext('2d');
+                const consumoMensualChart = new Chart(ctx2, {
+                    type: 'line', // Tipo de gráfico de área
+                    data: {
+                        labels: data.diasDelMes,
+                        datasets: [{
+                            label: 'Consumo',
+                            data: data.promediosDiarios,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Color de fondo del área
+                            borderColor: 'rgba(75, 192, 192, 1)', // Color del borde de la línea
+                            borderWidth: 1,
+                            fill: true // Rellena el área bajo la línea
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Día del Mes'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Consumo'
+                                }
+                            }
+                        }
+                    }
+                });
+
+                //grafica 4
+                const ctx4 = document.getElementById('ConsumoMensual').getContext('2d');
+                const consumoMensual = new Chart(ctx4, {
+                    type: 'line', // Tipo de gráfico de área
+                    data: {
+                        labels: data.diasDelMes,
+                        datasets: [{
+                            label: 'Consumo',
+                            data: data.ConsumoDiarios.map(value => value === null ? 0 : value),
+                            backgroundColor: 'rgba(75, 192, 75, 0.2)', // Color de fondo del área
+                            borderColor: 'rgba(75, 192, 192, 1)', // Color del borde de la línea
+                            borderWidth: 1,
+                            fill: true // Rellena el área bajo la línea
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Día del Mes'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Consumo'
+                                }
                             }
                         }
                     }

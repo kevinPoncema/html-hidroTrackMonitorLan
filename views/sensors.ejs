@@ -117,6 +117,12 @@
     </div>
   </div>
 
+  <div class="container mt-4">
+    <h2 class="text-center">Predicion de Consumo Mensual</h2>
+    <div class="chart-container" style="position: relative; height:400px; width:80vw;">
+      <canvas id="predictGrafica"></canvas>
+    </div>
+
   <!-- Bootstrap JS, Popper.js, Bootstrap Bundle (includes Popper) -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -188,6 +194,14 @@
     document.addEventListener('DOMContentLoaded', function() {
       const labels = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
       const values2 = <%= valuesData %>;
+      const values3 = <%= promediosDiarios %>;//datos de la predicon mensual 
+      const lbl2 = [//labels de la predicion mensual
+            '1',  '2',  '3',  '4',  '5',  '6',
+            '7',  '8',  '9',  '10', '11', '12',
+            '13', '14', '15', '16', '17', '18',
+            '19', '20', '21', '22', '23', '24',
+            '25', '26', '27', '28', '29', '30'
+          ]
       
       const ctx = document.getElementById('graficaBarra').getContext('2d');
       new Chart(ctx, {
@@ -214,6 +228,45 @@
           }
         }
       });
+
+      //grafica 2
+      const ctx2 = document.getElementById('predictGrafica').getContext('2d');
+        const consumoMensualChart = new Chart(ctx2, {
+            type: 'line', // Tipo de gráfico de área
+            data: {
+                labels: lbl2,
+                datasets: [{
+                    label: 'Consumo',
+                    data: values3,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Color de fondo del área
+                    borderColor: 'rgba(75, 192, 192, 1)', // Color del borde de la línea
+                    borderWidth: 1,
+                    fill: true // Rellena el área bajo la línea
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Día del Mes'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Consumo'
+                        }
+                    }
+                }
+            }
+        });
+
+      
+      
 
       if (!localStorage.getItem('tourCompleted')) {
       var intro = introJs();

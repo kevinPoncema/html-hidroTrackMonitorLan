@@ -54,16 +54,72 @@ class ValvulaController {
       
           //obtiene los datos del sensor y no de las mediciones 
           const senData =await valvulaDb.getSensorData(idSensor)
-        // Crear el objeto de respuesta
+
+          //procesa la grafica de predicion de conusmo mensual
+          const graficaMesualPredic =await valvulaDb.graficaMensualPorSen(idSensor)
+          // Formatear la gráfica de predicción mensual
+          const diasEnMes = 30;
+          const datosCompletos = [];
+          // Inicializar un array con 0 para todos los días del mes
+          for (let i = 1; i <= diasEnMes; i++) {
+              datosCompletos.push({
+                  dia_del_mes: i,
+                  promedio_consumo_diario: '0.00'
+              });
+          }
+
+          graficaMesualPredic.forEach(dato => {
+              const index = dato.dia_del_mes - 1;
+              if (index >= 0 && index < datosCompletos.length) {
+                  datosCompletos[index].promedio_consumo_diario = dato.promedio_consumo_diario;
+              } else {
+                  console.warn(`Índice fuera de rango: ${index}`);
+              }
+          });
+
+
+          // Separar los datos en dos arrays
+          const diasDelMes = datosCompletos.map(dato => dato.dia_del_mes.toString());
+          const promediosDiarios = datosCompletos.map(dato => parseFloat(dato.promedio_consumo_diario));
+
+          //obtiene los datos para la grafica de consumoMensual
+          const graficaMesual =await valvulaDb.graficaMensualNormal(idSensor)
+          // Formatear la gráfica  mensual
+          const datosCompletosConsumo = [];
+          // Inicializar un array con 0 para todos los días del mes
+          for (let i = 1; i <= diasEnMes; i++) {
+            datosCompletosConsumo.push({
+                  dia_del_mes: i,
+                  promedio_consumo_diario: '0.00'
+              });
+          }
+
+          graficaMesual.forEach(dato => {
+              const index = dato.dia_del_mes - 1;
+              if (index >= 0 && index < datosCompletos.length) {
+                datosCompletosConsumo[index].consumo_diario = dato.consumo_diario;
+              } else {
+                  console.warn(`Índice fuera de rango: ${index}`);
+              }
+          });
+
+
+          // Separar los datos en dos arrays
+        //   const diasDelMes = datosCompletos.map(dato => dato.dia_del_mes.toString());
+          const ConsumoDiarios = datosCompletosConsumo.map(dato => parseFloat(dato.consumo_diario));
+
+
         let respuesta = {
           labelsData: labelsSemanal,
           valuesData: valuesSemanal,
           labelsDataLinea: labelsHora,
           valuesDataLinea: valuesHora,
-          sensorData:senData
+          sensorData:senData,
+          diasDelMes:diasDelMes,
+          promediosDiarios:promediosDiarios,
+          ConsumoDiarios:ConsumoDiarios
       };
-
-        //console.log("json",res2)
+        //console.log("json",respuesta)
           return res.json(respuesta);
         } catch (error) {
           console.error("Error al obtener y procesar los datos:", error);
