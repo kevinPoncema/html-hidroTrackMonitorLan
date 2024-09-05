@@ -71,7 +71,17 @@ class ValvulaController {
           graficaMesualPredic.forEach(dato => {
               const index = dato.dia_del_mes - 1;
               if (index >= 0 && index < datosCompletos.length) {
-                  datosCompletos[index].promedio_consumo_diario = dato.promedio_consumo_diario;
+           // Convertir el promedio_consumo_diario a número
+              let consumoDiario = parseFloat(dato.promedio_consumo_diario);
+        
+        // Generar un porcentaje aleatorio entre -3% y 3%
+              const porcentajeAleatorio = (Math.random() * 6 - 3) / 100;
+        
+        // Ajustar el valor con el porcentaje aleatorio
+              consumoDiario += consumoDiario * porcentajeAleatorio;
+        
+        // Redondear a dos decimales y actualizar el valor
+              datosCompletos[index].promedio_consumo_diario = consumoDiario.toFixed(2);
               } else {
                   console.warn(`Índice fuera de rango: ${index}`);
               }
