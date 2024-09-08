@@ -8,6 +8,7 @@ const http = require('http'); // Importar http
 const socketIo = require('socket.io'); // Importar socket.io
 const schedule = require('node-schedule');
 const cors = require('cors'); // Importar cors
+const webpush = require("./webpush.js");
 // Crea la app de Express
 const app = express();
 app.use(cors({
@@ -47,6 +48,40 @@ app.set('views', path.join(__dirname, 'views'));
 // Servir archivos estáticos desde la carpeta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
+let valulaMOde = require("./models/valvulaModel.js")
+let valvulaDB2 = new valulaMOde();
+//configura las notificaciones 
+let pushSubscripton;
+
+app.post("/subscription", async (req, res) => {
+  pushSubscripton = req.body;
+ // console.log(pushSubscripton);
+
+  // Server's Response
+  res.status(201).json();
+});
+
+
+// Cambia a GET y recibe un ID en los parámetros
+app.get("/new-message/:id", async (req, res) => {
+  const { id } = req.params;  // Captura el id de los parámetros de la URL
+  let data = await valvulaDB2.getSensorData(id);
+ // console.log(data)
+  let message = `Alerta de posible fuga en la llave ${data.rows[0].nombre_sen} Alerta de fuga`
+  // Crear el payload de la notificación
+  const payload = JSON.stringify({
+    title: `Alerta de fuga`,
+    message
+  });
+  
+  res.status(200).json();
+  
+  try {
+    await webpush.sendNotification(pushSubscripton, payload);
+  } catch (error) {
+    console.log(error);
+  }
+});
 // Ruta para servir el archivo logIn.html
 app.get("/",device.capture(), (req, res) => {
     if (req.device.type === 'phone'){
