@@ -3,7 +3,7 @@ const MainModel = require("../models/mainModel");
 
 class mainControl {
     async getMain(req, res) {
-        const userName = req.session.username;
+        const userName = "david";
         const mainModel = new MainModel();
         try {
             const sensors = await mainModel.getSensorsByUserName(userName);
